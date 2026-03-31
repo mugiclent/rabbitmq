@@ -1,0 +1,51 @@
+{
+  "vhosts": [
+    { "name": "/" }
+  ],
+  "exchanges": [
+    {
+      "name": "notifications",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "logs",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    }
+  ],
+  "queues": [
+    { "name": "sms",   "vhost": "/", "durable": true, "auto_delete": false, "arguments": {} },
+    { "name": "mail",  "vhost": "/", "durable": true, "auto_delete": false, "arguments": {} },
+    { "name": "push",  "vhost": "/", "durable": true, "auto_delete": false, "arguments": {} },
+    { "name": "audit", "vhost": "/", "durable": true, "auto_delete": false, "arguments": {} }
+  ],
+  "bindings": [
+    {
+      "source": "notifications", "vhost": "/",
+      "destination": "sms",  "destination_type": "queue",
+      "routing_key": "sms.notifications", "arguments": {}
+    },
+    {
+      "source": "notifications", "vhost": "/",
+      "destination": "mail", "destination_type": "queue",
+      "routing_key": "mail.notifications", "arguments": {}
+    },
+    {
+      "source": "notifications", "vhost": "/",
+      "destination": "push", "destination_type": "queue",
+      "routing_key": "push.notifications", "arguments": {}
+    },
+    {
+      "source": "logs", "vhost": "/",
+      "destination": "audit", "destination_type": "queue",
+      "routing_key": "audit.logs", "arguments": {}
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+services:
+  rabbitmq:
+    build: .
+    container_name: rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER:  ${RABBITMQ_USER}    # injected by infisical run
+      RABBITMQ_DEFAULT_PASS:  ${RABBITMQ_PASSWORD} # injected by infisical run
+      RABBITMQ_DEFAULT_VHOST: /
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+      - ./config/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./config/definitions.json:/etc/rabbitmq/definitions.json:ro
+      - ./config/enabled_plugins:/etc/rabbitmq/enabled_plugins:ro
+    networks:
+      - katisha-net
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  rabbitmq_data:
+    name: rabbitmq_data
+
+networks:
+  katisha-net:
+    external: true
