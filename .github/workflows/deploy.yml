@@ -31,15 +31,15 @@ jobs:
             fi
 
             # Fetch secrets from Infisical and inject them at runtime.
-            # Secrets never touch disk — infisical run passes them as env vars
-            # to docker compose, which forwards them to the container.
+            # Machine identity credentials are passed as env vars — the CLI
+            # picks them up automatically for universal auth.
+            INFISICAL_API_URL=http://localhost:8080 \
+            INFISICAL_MACHINE_IDENTITY_CLIENT_ID=${{ secrets.INFISICAL_CLIENT_ID }} \
+            INFISICAL_MACHINE_IDENTITY_CLIENT_SECRET=${{ secrets.INFISICAL_CLIENT_SECRET }} \
             infisical run \
-              --clientId=${{ secrets.INFISICAL_CLIENT_ID }} \
-              --clientSecret=${{ secrets.INFISICAL_CLIENT_SECRET }} \
               --projectId=${{ secrets.INFISICAL_PROJECT_ID }} \
               --env=dev \
               --path=/rabbitmq \
-              --domain=http://localhost:8080 \
               -- docker compose up -d --build
 
             echo "Waiting for rabbitmq to be healthy..."
