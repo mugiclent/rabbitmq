@@ -20,7 +20,9 @@ if ! rabbitmqctl list_users 2>/dev/null | grep -qF "${RABBITMQ_DEFAULT_USER}"; t
   rabbitmqctl set_permissions -p / "${RABBITMQ_DEFAULT_USER}" ".*" ".*" ".*"
   echo "Admin user '${RABBITMQ_DEFAULT_USER}' created."
 else
-  echo "Admin user '${RABBITMQ_DEFAULT_USER}' already exists, skipping."
+  # Sync the password on every start so Infisical changes take effect on restart.
+  rabbitmqctl change_password "${RABBITMQ_DEFAULT_USER}" "${RABBITMQ_DEFAULT_PASS}"
+  echo "Admin user '${RABBITMQ_DEFAULT_USER}' password synced."
 fi
 
 # Hand off to the RabbitMQ process
