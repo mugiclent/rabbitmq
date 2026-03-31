@@ -30,16 +30,22 @@ jobs:
               cd "$DEPLOY_DIR"
             fi
 
+            # Authenticate with Infisical universal auth and get a short-lived token.
+            # The token is used for the run command — credentials never touch disk.
+            INFISICAL_TOKEN=$(infisical login \
+              --method=universal-auth \
+              --client-id=${{ secrets.INFISICAL_CLIENT_ID }} \
+              --client-secret=${{ secrets.INFISICAL_CLIENT_SECRET }} \
+              --domain=http://localhost:8080 \
+              --plain --silent)
+
             # Fetch secrets from Infisical and inject them at runtime.
-            # Machine identity credentials are passed as env vars — the CLI
-            # picks them up automatically for universal auth.
-            INFISICAL_API_URL=http://localhost:8080 \
-            INFISICAL_MACHINE_IDENTITY_CLIENT_ID=${{ secrets.INFISICAL_CLIENT_ID }} \
-            INFISICAL_MACHINE_IDENTITY_CLIENT_SECRET=${{ secrets.INFISICAL_CLIENT_SECRET }} \
             infisical run \
+              --token="$INFISICAL_TOKEN" \
               --projectId=${{ secrets.INFISICAL_PROJECT_ID }} \
               --env=dev \
               --path=/rabbitmq \
+              --domain=http://localhost:8080 \
               -- docker compose up -d --build
 
             echo "Waiting for rabbitmq to be healthy..."
