@@ -26,6 +26,14 @@
       "durable": true,
       "auto_delete": false,
       "arguments": {}
+    },
+    {
+      "name": "audit.dlx",
+      "vhost": "/",
+      "type": "fanout",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
     }
   ],
   "queues": [
@@ -55,10 +63,17 @@
       "vhost": "/",
       "durable": true,
       "auto_delete": false,
-      "arguments": {}
+      "arguments": { "x-dead-letter-exchange": "audit.dlx" }
     },
     {
       "name": "notifications.dead",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "audit.dead",
       "vhost": "/",
       "durable": true,
       "auto_delete": false,
@@ -102,6 +117,14 @@
       "source": "notifications.dlx",
       "vhost": "/",
       "destination": "notifications.dead",
+      "destination_type": "queue",
+      "routing_key": "",
+      "arguments": {}
+    },
+    {
+      "source": "audit.dlx",
+      "vhost": "/",
+      "destination": "audit.dead",
       "destination_type": "queue",
       "routing_key": "",
       "arguments": {}
