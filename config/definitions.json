@@ -156,6 +156,13 @@
       "arguments": {}
     },
     {
+      "name": "users-user-svc",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": { "x-dead-letter-exchange": "users.dlx" }
+    },
+    {
       "name": "users.dead",
       "vhost": "/",
       "durable": true,
@@ -242,6 +249,14 @@
       "destination": "billing.dead",
       "destination_type": "queue",
       "routing_key": "",
+      "arguments": {}
+    },
+    {
+      "source": "users",
+      "vhost": "/",
+      "destination": "users-user-svc",
+      "destination_type": "queue",
+      "routing_key": "#",
       "arguments": {}
     },
     {

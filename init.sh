@@ -5,6 +5,9 @@ set -e
 rabbitmq-server &
 RABBIT_PID=$!
 
+# Forward SIGTERM/SIGINT to rabbitmq-server so Docker can stop it cleanly.
+trap 'rabbitmqctl stop; wait $RABBIT_PID' TERM INT
+
 # Wait until the node is fully up
 until rabbitmqctl await_startup 2>/dev/null; do
   sleep 2
