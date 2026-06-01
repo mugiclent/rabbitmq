@@ -12,17 +12,17 @@
       "arguments": {}
     },
     {
-      "name": "logs",
+      "name": "notifications.dlx",
       "vhost": "/",
-      "type": "topic",
+      "type": "fanout",
       "durable": true,
       "auto_delete": false,
       "arguments": {}
     },
     {
-      "name": "notifications.dlx",
+      "name": "logs",
       "vhost": "/",
-      "type": "fanout",
+      "type": "topic",
       "durable": true,
       "auto_delete": false,
       "arguments": {}
@@ -81,190 +81,6 @@
       "type": "fanout",
       "durable": true,
       "auto_delete": false,
-      "arguments": {}
-    }
-  ],
-  "queues": [
-    {
-      "name": "sms",
-      "vhost": "/",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": { "x-dead-letter-exchange": "notifications.dlx" }
-    },
-    {
-      "name": "mail",
-      "vhost": "/",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": { "x-dead-letter-exchange": "notifications.dlx" }
-    },
-    {
-      "name": "push",
-      "vhost": "/",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": { "x-dead-letter-exchange": "notifications.dlx" }
-    },
-    {
-      "name": "audit",
-      "vhost": "/",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": { "x-dead-letter-exchange": "audit.dlx" }
-    },
-    {
-      "name": "notifications.dead",
-      "vhost": "/",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": {}
-    },
-    {
-      "name": "audit.dead",
-      "vhost": "/",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": {}
-    },
-    {
-      "name": "payment-user-svc",
-      "vhost": "/",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": { "x-dead-letter-exchange": "payment.dlx" }
-    },
-    {
-      "name": "payment.dead",
-      "vhost": "/",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": {}
-    },
-    {
-      "name": "billing-user-svc",
-      "vhost": "/",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": { "x-dead-letter-exchange": "billing.dlx" }
-    },
-    {
-      "name": "billing.dead",
-      "vhost": "/",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": {}
-    },
-    {
-      "name": "users-user-svc",
-      "vhost": "/",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": { "x-dead-letter-exchange": "users.dlx" }
-    },
-    {
-      "name": "users.dead",
-      "vhost": "/",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": {}
-    }
-  ],
-  "bindings": [
-    {
-      "source": "notifications",
-      "vhost": "/",
-      "destination": "sms",
-      "destination_type": "queue",
-      "routing_key": "sms.notifications",
-      "arguments": {}
-    },
-    {
-      "source": "notifications",
-      "vhost": "/",
-      "destination": "mail",
-      "destination_type": "queue",
-      "routing_key": "mail.notifications",
-      "arguments": {}
-    },
-    {
-      "source": "notifications",
-      "vhost": "/",
-      "destination": "push",
-      "destination_type": "queue",
-      "routing_key": "push.notifications",
-      "arguments": {}
-    },
-    {
-      "source": "logs",
-      "vhost": "/",
-      "destination": "audit",
-      "destination_type": "queue",
-      "routing_key": "audit.logs",
-      "arguments": {}
-    },
-    {
-      "source": "notifications.dlx",
-      "vhost": "/",
-      "destination": "notifications.dead",
-      "destination_type": "queue",
-      "routing_key": "",
-      "arguments": {}
-    },
-    {
-      "source": "audit.dlx",
-      "vhost": "/",
-      "destination": "audit.dead",
-      "destination_type": "queue",
-      "routing_key": "",
-      "arguments": {}
-    },
-    {
-      "source": "payment",
-      "vhost": "/",
-      "destination": "payment-user-svc",
-      "destination_type": "queue",
-      "routing_key": "#",
-      "arguments": {}
-    },
-    {
-      "source": "payment.dlx",
-      "vhost": "/",
-      "destination": "payment.dead",
-      "destination_type": "queue",
-      "routing_key": "",
-      "arguments": {}
-    },
-    {
-      "source": "billing",
-      "vhost": "/",
-      "destination": "billing-user-svc",
-      "destination_type": "queue",
-      "routing_key": "#",
-      "arguments": {}
-    },
-    {
-      "source": "billing.dlx",
-      "vhost": "/",
-      "destination": "billing.dead",
-      "destination_type": "queue",
-      "routing_key": "",
-      "arguments": {}
-    },
-    {
-      "source": "users",
-      "vhost": "/",
-      "destination": "users-user-svc",
-      "destination_type": "queue",
-      "routing_key": "#",
-      "arguments": {}
-    },
-    {
-      "source": "users.dlx",
-      "vhost": "/",
-      "destination": "users.dead",
-      "destination_type": "queue",
-      "routing_key": "",
       "arguments": {}
     }
   ]
