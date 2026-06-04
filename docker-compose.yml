@@ -15,7 +15,7 @@ services:
     networks:
       - katisha-net
     healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      test: ["CMD", "sh", "-c", "rabbitmq-diagnostics check_running && rabbitmq-diagnostics check_local_alarms"]
       interval: 10s
       timeout: 5s
       retries: 5

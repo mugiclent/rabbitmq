@@ -8,8 +8,15 @@ RABBIT_PID=$!
 # Forward SIGTERM/SIGINT to rabbitmq-server so Docker can stop it cleanly.
 trap 'rabbitmqctl stop; wait $RABBIT_PID' TERM INT
 
-# Wait until the node is fully up
+# Wait until the node is fully up (60 s timeout — fail fast if something is wrong)
+WAIT=0
 until rabbitmqctl await_startup 2>/dev/null; do
+  WAIT=$((WAIT + 2))
+  if [ "$WAIT" -ge 60 ]; then
+    echo "[rabbitmq] ERROR: node did not start within 60 s, aborting"
+    kill "$RABBIT_PID"
+    exit 1
+  fi
   sleep 2
 done
 
